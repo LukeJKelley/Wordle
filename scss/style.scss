@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: black;
+  height: 100vh;
+}
+h1 {
+  font-size: 70px;
+  font-family: "Calligraffitti", cursive;
+  font-weight: bold;
+  color: white;
+}
+
+.grid-container {
+  height: 50vh;
+  width: 45vw;
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto auto;
+  background-color: #2196f3;
+  padding: 10px;
+  border: 2px black solid;
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.keyboard {
+  height: 20vh;
+  width: 45vw;
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  & > button {
+    height: 60px;
+    width: 60px;
+    border-radius: 12px;
+    &:hover {
+      background-color: lightslategrey;
+    }
+  }
+}
