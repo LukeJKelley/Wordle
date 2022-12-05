@@ -258,15 +258,11 @@ console.log(btns);
 
 const boxes = document.querySelectorAll(".grid-item");
 
-const one = document.querySelector("#id1");
-
+//Selects all grid boxes, need to change to select only one grid-item box.
+// Unsure if this is thr right direction for the rest of the application
 btns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    var el;
-    var prefix = "id";
-    for (var i = 0; (el = document.getElementById(prefix + i)); i++) {
-      createElement("p", btn.value, el);
-    }
+    createElement("p", btn.value, boxes);
   });
 });
 
