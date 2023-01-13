@@ -239,44 +239,25 @@ const words = [
 
 let randWord = words[Math.floor(Math.random() * words.length)];
 
-console.log(randWord);
-
 randWord = randWord.split("");
 
-console.log(randWord);
-
-let userGuess = "a";
-
-//If user input matches the letter in an array and the position in the array then true - turns green
-// If value of input matches a letter in the array then true - eventually turn yellow
-
-//function that takes a letter and postion and outputs a colour
-
-//set values instead of storing them. similar to setText.. set.style.background-color.
-
-//avoid over storing things.
-
+const win = document.querySelector("#win");
+const lose = document.querySelector("#lose");
 const btns = document.querySelectorAll(".letter");
-console.log(btns);
-
 const boxes = document.querySelectorAll(".grid-item");
-
 const remove = document.querySelector("#remove");
-
 const enter = document.querySelector("#enter");
-
-console.log(boxes);
+const reset = document.querySelector("#reset");
 
 let i = 0;
-
-// boxes[i].style.backgroundColor = "lightcoral";
-// boxes[i].style.backgroundColor = "greenyellow";
+let j = 0;
+let num = 0;
+let yes = 0;
 
 btns.forEach((btn) => {
   btn.addEventListener("click", () => {
     boxes[i].textContent = btn.value;
     boxes[i].value = btn.value;
-
     ++i;
   });
 });
@@ -287,26 +268,37 @@ remove.addEventListener("click", () => {
   boxes[i].value = " ";
 });
 
-let j = 0;
-
-// i = grid-box position
-// J increases by 5 everytime I click the enter button
-// to check the next 5 boxes
-// once I check the first 5 elements
-// I need to check the next 5 elements
-// therefore I need to increase i by 5 to check from i (5) to j (10). and so on.
-// This for loop resets after it hits the desired condition of i (0 incremented by 1) is less than j (5)
-// When i click enter the second time i starts from 0 and increments until it hits the desired condition is than j (5 now incremented by 5 equalling 10)
-// This means the box I'm checking for a correct letter in is the first set of 5 not the second set of 5
 enter.addEventListener("click", () => {
   j = j + 5;
-  for (let i = 0; i < j; ) {
-    checkLetter(i, i);
+
+  for (let i = num * 5; i < j; ) {
+    checkLetter(i % 5, i);
     i++;
-    console.log("letters in array", i);
-    console.log("box letter", i);
+    guesses = j / 5;
+    if (j < 35) {
+      checkWin(i % 5, i, j);
+    } else if (win.textContent === "") {
+      lose.textContent = "You Lose! \r\n";
+      lose.textContent += "Word : " + randWord.join("");
+      reloadPage("resetBtn--red");
+    }
   }
+  num++;
 });
+
+const checkWin = (index, box, guesses) => {
+  guesses = guesses / 5;
+  if (yes === 4) {
+    win.textContent = "You Win! \r\n";
+    win.textContent += "Number of Guesses: " + guesses + "\r\n";
+    win.textContent += "Word: " + randWord.join("");
+    reloadPage("resetBtn--green"); // fix css
+  } else if (randWord[index] === boxes[box].textContent) {
+    yes++;
+  } else {
+    yes = 0;
+  }
+};
 
 const checkLetter = (index, box) => {
   if (randWord[index] === boxes[box].textContent) {
@@ -318,28 +310,17 @@ const checkLetter = (index, box) => {
   }
 };
 
-// const createElement = (elementType, text, parent) => {
-//   const newElement = document.createElement(elementType);
+const createElement = (element, text, parent, id) => {
+  const newElement = document.createElement(element);
+  newElement.setAttribute("id", id);
+  const textNode = document.createTextNode(text);
+  newElement.appendChild(textNode);
+  parent.appendChild(newElement);
+};
 
-//   const textNode = document.createTextNode(text);
-
-//   newElement.appendChild(textNode);
-
-//   parent.appendChild(newElement);
-// };
-
-const arr = ["h", "e", "l", "l", "o"];
-console.log(arr);
-
-let input = ["h", "e", "l", "l", "o"];
-console.log(input);
-
-arr.map(i);
-
-input.map(i);
-
-if (arr[i].every() == input[i].every()) {
-  console.log("correct");
-} else {
-  console.log("incorrect");
-}
+const reloadPage = (id) => {
+  createElement("button", "Try Again", lose, id);
+  document.querySelector(`#${id}`).addEventListener("click", () => {
+    location.reload(true);
+  });
+};

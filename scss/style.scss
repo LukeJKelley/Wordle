@@ -53,3 +53,41 @@ h1 {
     }
   }
 }
+#win {
+  font-family: Ink Free, sans-serif;
+  font-size: 100px;
+  color: green;
+  font-weight: bolder;
+  background-color: aliceblue;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  white-space: pre-line;
+}
+#lose {
+  @extend #win;
+  color: red;
+}
+#resetBtn--red {
+  color: white;
+  border-radius: 30px;
+  background-color: red;
+  height: 50px;
+  width: 150px;
+  font-size: 30px;
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.637);
+    color: black;
+  }
+}
+#resetBtn--green {
+  @extend #resetBtn--red;
+  background-color: greenyellow;
+  border: black 10px solid;
+  &:hover {
+    background-color: rgba(172, 255, 47, 0.637);
+    color: black;
+  }
+}

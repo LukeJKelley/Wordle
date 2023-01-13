@@ -54,3 +54,43 @@ h1 {
 .keyboard > button:hover {
   background-color: lightslategrey;
 }
+
+#win, #lose {
+  font-family: Ink Free, sans-serif;
+  font-size: 100px;
+  color: green;
+  font-weight: bolder;
+  background-color: aliceblue;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  white-space: pre-line;
+}
+
+#lose {
+  color: red;
+}
+
+#resetBtn--red, #resetBtn--green {
+  color: white;
+  border-radius: 30px;
+  background-color: red;
+  height: 50px;
+  width: 150px;
+  font-size: 30px;
+}
+#resetBtn--red:hover, #resetBtn--green:hover {
+  background-color: rgba(255, 0, 0, 0.637);
+  color: black;
+}
+
+#resetBtn--green {
+  background-color: greenyellow;
+  border: black 10px solid;
+}
+#resetBtn--green:hover {
+  background-color: rgba(172, 255, 47, 0.637);
+  color: black;
+}
