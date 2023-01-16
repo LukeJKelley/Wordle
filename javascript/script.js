@@ -1,245 +1,11 @@
-const words = [
-  "other",
-  "there",
-  "which",
-  "their",
-  "about",
-  "write",
-  "would",
-  "these",
-  "thing",
-  "could",
-  "sound",
-  "water",
-  "first",
-  "place",
-  "where",
-  "after",
-  "round",
-  "every",
-  "under",
-  "great",
-  "think",
-  "cause",
-  "right",
-  "three",
-  "small",
-  "large",
-  "spell",
-  "light",
-  "house",
-  "again",
-  "point",
-  "world",
-  "build",
-  "earth",
-  "stand",
-  "found",
-  "study",
-  "still",
-  "learn",
-  "plant",
-  "cover",
-  "state",
-  "never",
-  "cross",
-  "start",
-  "might",
-  "story",
-  "while",
-  "press",
-  "close",
-  "night",
-  "north",
-  "white",
-  "begin",
-  "paper",
-  "group",
-  "music",
-  "those",
-  "often",
-  "until",
-  "river",
-  "carry",
-  "began",
-  "horse",
-  "watch",
-  "color",
-  "plain",
-  "usual",
-  "young",
-  "ready",
-  "above",
-  "leave",
-  "black",
-  "short",
-  "class",
-  "order",
-  "south",
-  "piece",
-  "since",
-  "whole",
-  "space",
-  "heard",
-  "early",
-  "reach",
-  "table",
-  "vowel",
-  "money",
-  "serve",
-  "voice",
-  "power",
-  "field",
-  "pound",
-  "drive",
-  "stood",
-  "front",
-  "teach",
-  "final",
-  "green",
-  "quick",
-  "ocean",
-  "clear",
-  "wheel",
-  "force",
-  "plane",
-  "stead",
-  "laugh",
-  "check",
-  "shape",
-  "bring",
-  "paint",
-  "among",
-  "grand",
-  "heart",
-  "heavy",
-  "dance",
-  "speak",
-  "count",
-  "store",
-  "train",
-  "sleep",
-  "prove",
-  "catch",
-  "mount",
-  "board",
-  "glass",
-  "grass",
-  "visit",
-  "month",
-  "happy",
-  "eight",
-  "raise",
-  "solve",
-  "metal",
-  "seven",
-  "third",
-  "shall",
-  "floor",
-  "coast",
-  "value",
-  "fight",
-  "sense",
-  "quite",
-  "broke",
-  "scale",
-  "child",
-  "speed",
-  "organ",
-  "dress",
-  "cloud",
-  "quiet",
-  "stone",
-  "climb",
-  "stick",
-  "smile",
-  "trade",
-  "mouth",
-  "exact",
-  "least",
-  "shout",
-  "wrote",
-  "clean",
-  "break",
-  "blood",
-  "touch",
-  "brown",
-  "equal",
-  "woman",
-  "whose",
-  "radio",
-  "spoke",
-  "human",
-  "party",
-  "agree",
-  "chair",
-  "fruit",
-  "thick",
-  "guess",
-  "sharp",
-  "crowd",
-  "sight",
-  "hurry",
-  "chief",
-  "clock",
-  "enter",
-  "major",
-  "fresh",
-  "allow",
-  "print",
-  "block",
-  "chart",
-  "event",
-  "quart",
-  "truck",
-  "noise",
-  "level",
-  "throw",
-  "shine",
-  "wrong",
-  "broad",
-  "anger",
-  "claim",
-  "sugar",
-  "death",
-  "skill",
-  "women",
-  "thank",
-  "match",
-  "steel",
-  "guide",
-  "score",
-  "apple",
-  "pitch",
-  "dream",
-  "total",
-  "basic",
-  "smell",
-  "track",
-  "shore",
-  "sheet",
-  "favor",
-  "spend",
-  "chord",
-  "share",
-  "bread",
-  "offer",
-  "slave",
-  "chick",
-  "enemy",
-  "reply",
-  "drink",
-  "occur",
-  "range",
-  "steam",
-  "meant",
-  "teeth",
-  "shell",
-];
+import { words } from "./random-word-array.js";
+import { getDefinition } from "./data-Utils.js";
 
 let randWord = words[Math.floor(Math.random() * words.length)];
 
 randWord = randWord.split("");
+
+console.log(randWord);
 
 const win = document.querySelector("#win");
 const lose = document.querySelector("#lose");
@@ -253,6 +19,17 @@ let i = 0;
 let j = 0;
 let num = 0;
 let yes = 0;
+let guesses = 0;
+
+const updateDefinition = async (id, name) => {
+  randWord = randWord.join("");
+  const response = await fetch(
+    `https://api.dictionaryapi.dev/api/v2/entries/en/${randWord}`
+  );
+  const data = await response.json();
+  name = getDefinition(data);
+  id.textContent = name;
+};
 
 btns.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -280,7 +57,8 @@ enter.addEventListener("click", () => {
     } else if (win.textContent === "") {
       lose.textContent = "You Lose! \r\n";
       lose.textContent += "Word : " + randWord.join("");
-      reloadPage("resetBtn--red");
+      WordDefinition("Definition", lose, "definition--red");
+      reloadPage(lose, "resetBtn--red");
     }
   }
   num++;
@@ -292,7 +70,8 @@ const checkWin = (index, box, guesses) => {
     win.textContent = "You Win! \r\n";
     win.textContent += "Number of Guesses: " + guesses + "\r\n";
     win.textContent += "Word: " + randWord.join("");
-    reloadPage("resetBtn--green"); // fix css
+    WordDefinition("Definition", win, "definition--green");
+    reloadPage(win, "resetBtn--green");
   } else if (randWord[index] === boxes[box].textContent) {
     yes++;
   } else {
@@ -318,9 +97,16 @@ const createElement = (element, text, parent, id) => {
   parent.appendChild(newElement);
 };
 
-const reloadPage = (id) => {
-  createElement("button", "Try Again", lose, id);
+const reloadPage = (parent, id) => {
+  createElement("button", "Try Again", parent, id);
   document.querySelector(`#${id}`).addEventListener("click", () => {
     location.reload(true);
+  });
+};
+
+const WordDefinition = (text, parent, id) => {
+  createElement("button", text, parent, id);
+  document.querySelector(`#${id}`).addEventListener("click", () => {
+    updateDefinition(parent, name);
   });
 };
